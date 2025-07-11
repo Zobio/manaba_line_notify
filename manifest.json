@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Manaba課題通知",
+  "version": "1.0",
+  "description": "manabaの課題締切をLINEで通知します",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "notifications"
+  ],
+  "host_permissions": [
+    "https://manaba.tsukuba.ac.jp/*",
+    "https://notify-api.line.me/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://manaba.tsukuba.ac.jp/ct/home*"],
+      "js": ["content.js"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Manaba課題通知"
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manaba課題通知</title>
+    <style>
+        body {
+            width: 350px;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin: 0 0 20px 0;
+            font-size: 18px;
+            color: #333;
+            text-align: center;
+        }
+        .section {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .section h2 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            color: #666;
+            font-weight: 600;
+        }
+        .input-group {
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 12px;
+            color: #666;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 12px;
+            box-sizing: border-box;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        button.secondary {
+            background: #008CBA;
+        }
+        button.secondary:hover {
+            background: #007B9A;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .assignment-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .assignment-item {
+            background: #f8f9fa;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            border-left: 4px solid #ff4444;
+        }
+        .assignment-title {
+            font-weight: 600;
+            font-size: 12px;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        .assignment-info {
+            font-size: 11px;
+            color: #666;
+            line-height: 1.4;
+        }
+        .hidden {
+            display: none;
+        }
+        .link {
+            color: #007bff;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Manaba課題通知</h1>
+        
+        <div class="section">
+            <h2>🔔 LINE通知設定</h2>
+            <div class="input-group">
+                <label for="lineToken">LINE Notifyトークン:</label>
+                <input type="password" id="lineToken" placeholder="LINE Notifyトークンを入力">
+            </div>
+            <button id="saveToken">保存</button>
+            <button id="testNotification" class="secondary">テスト通知</button>
+            <div class="link" id="getTokenLink">トークンの取得方法</div>
+        </div>
+        
+        <div class="section">
+            <h2>📊 課題状況</h2>
+            <div id="statusDisplay" class="status info">
+                manabaの課題ページを開くと自動で更新されます
+            </div>
+            <div id="assignmentList" class="assignment-list hidden"></div>
+        </div>
+        
+        <div class="section">
+            <h2>ℹ️ 使用方法</h2>
+            <ol style="font-size: 11px; color: #666; margin: 0; padding-left: 20px;">
+                <li>LINE Notifyトークンを取得して上記に設定</li>
+                <li>manabaの課題ページ（ホーム）を開く</li>
+                <li>締切24時間以内の課題を自動検出</li>
+                <li>新しい緊急課題があればLINEに通知</li>
+            </ol>
+        </div>
+    </div>
+    
+    <script src="popup.js"></script>
+</body>
+</html>
