@@ -10,7 +10,7 @@
   ],
   "host_permissions": [
     "https://manaba.tsukuba.ac.jp/*",
-    "https://notify-api.line.me/*"
+    "https://discord.com/*"
   ],
   "content_scripts": [
     {

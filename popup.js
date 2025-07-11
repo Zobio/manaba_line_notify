@@ -1,10 +1,10 @@
 // Popup UI制御
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // 保存されたトークンを読み込み
-    const { lineToken } = await chrome.storage.local.get(['lineToken']);
-    if (lineToken) {
-        document.getElementById('lineToken').value = lineToken;
+    // 保存されたWebhookを読み込み
+    const { discordWebhook } = await chrome.storage.local.get(['discordWebhook']);
+    if (discordWebhook) {
+        document.getElementById('discordWebhook').value = discordWebhook;
     }
     
     // 課題状況を表示
@@ -15,22 +15,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function setupEventListeners() {
-    // トークン保存
-    document.getElementById('saveToken').addEventListener('click', async () => {
-        const token = document.getElementById('lineToken').value.trim();
-        if (token) {
-            await chrome.storage.local.set({ lineToken: token });
-            showStatus('トークンを保存しました', 'success');
+    // Webhook保存
+    document.getElementById('saveWebhook').addEventListener('click', async () => {
+        const webhook = document.getElementById('discordWebhook').value.trim();
+        if (webhook) {
+            await chrome.storage.local.set({ discordWebhook: webhook });
+            showStatus('Webhook URLを保存しました', 'success');
         } else {
-            showStatus('トークンを入力してください', 'error');
+            showStatus('Webhook URLを入力してください', 'error');
         }
     });
     
     // テスト通知
     document.getElementById('testNotification').addEventListener('click', async () => {
-        const { lineToken } = await chrome.storage.local.get(['lineToken']);
-        if (!lineToken) {
-            showStatus('先にトークンを保存してください', 'error');
+        const { discordWebhook } = await chrome.storage.local.get(['discordWebhook']);
+        if (!discordWebhook) {
+            showStatus('先にWebhook URLを保存してください', 'error');
             return;
         }
         
@@ -42,9 +42,9 @@ function setupEventListeners() {
         }
     });
     
-    // トークン取得リンク
-    document.getElementById('getTokenLink').addEventListener('click', () => {
-        chrome.tabs.create({ url: 'https://notify-bot.line.me/my/' });
+    // Webhook取得リンク
+    document.getElementById('getWebhookLink').addEventListener('click', () => {
+        chrome.tabs.create({ url: 'https://support.discord.com/hc/ja/articles/228383668-Intro-to-Webhooks' });
     });
 }
 

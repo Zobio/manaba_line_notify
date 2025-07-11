@@ -1,24 +1,25 @@
 # Manaba課題通知 Chrome拡張機能
 
-manabaの課題締切をLINEで自動通知するChrome拡張機能です。
+manabaの課題締切をDiscordで自動通知するChrome拡張機能です。
 
 ## 機能
 
 - 🚨 **自動課題検出**: manabaの課題ページを開くと自動で課題情報を取得
-- ⏰ **締切通知**: 24時間以内の課題をLINEで通知
-- 📱 **LINE連携**: LINE Notify APIを使用した通知
+- ⏰ **締切通知**: 24時間以内の課題をDiscordで通知
+- 📱 **Discord連携**: Discord Webhook APIを使用した通知
 - 🔄 **重複防止**: 同じ課題の重複通知を防止
 - 📊 **状況確認**: 拡張機能のポップアップで課題状況を確認
 
 ## セットアップ
 
-### 1. LINE Notifyトークンの取得
+### 1. Discord Webhook URLの取得
 
-1. [LINE Notify](https://notify-bot.line.me/my/)にアクセス
-2. 「トークンを発行する」をクリック
-3. 適当なトークン名を入力（例：manaba課題通知）
-4. 通知を送信するトークルームを選択
-5. 発行されたトークンをコピー
+1. Discordでサーバーを選択
+2. 通知を送信したいチャンネルの設定 ⚙️ をクリック
+3. 「連携サービス」→「ウェブフック」を選択
+4. 「新しいウェブフック」をクリック
+5. 名前を設定（例：manaba課題通知）
+6. 「ウェブフックURLをコピー」をクリック
 
 ### 2. 拡張機能のインストール
 
@@ -30,14 +31,14 @@ manabaの課題締切をLINEで自動通知するChrome拡張機能です。
 ### 3. 設定
 
 1. 拡張機能のアイコンをクリックしてポップアップを開く
-2. LINE Notifyトークンを入力して「保存」をクリック
+2. Discord Webhook URLを入力して「保存」をクリック
 3. 「テスト通知」で動作確認
 
 ## 使用方法
 
 1. 普段通りmanabaにログインして課題ページ（ホーム）を開く
 2. 拡張機能が自動的に課題情報を取得・分析
-3. 締切24時間以内の課題があれば自動でLINE通知
+3. 締切24時間以内の課題があれば自動でDiscordに通知
 
 ## ファイル構成
 
@@ -54,7 +55,7 @@ manaba_notify/
 ## 注意事項
 
 - 筑波大学のmanaba専用です
-- LINE Notifyトークンは安全に管理してください
+- Discord Webhook URLは安全に管理してください
 - 課題ページを開いた時のみ情報が更新されます
 - 同じ課題の重複通知は24時間以上経過後にリセットされます
 
@@ -66,9 +67,9 @@ manaba_notify/
 - ページが完全に読み込まれるまで待つ
 - ブラウザのコンソールでエラーを確認
 
-### LINE通知が送信されない場合
+### Discord通知が送信されない場合
 
-- LINE Notifyトークンが正しく設定されているか確認
+- Discord Webhook URLが正しく設定されているか確認
 - 「テスト通知」で動作確認
 - ネットワーク接続を確認
 
@@ -83,13 +84,13 @@ manaba_notify/
 ### 主要な処理
 
 1. **content.js**: DOMを監視してtable.stdlistから課題データを抽出
-2. **background.js**: 課題データを分析して緊急課題をLINE通知
-3. **popup.js**: 設定画面とトークン管理、現在の課題状況表示
+2. **background.js**: 課題データを分析して緊急課題をDiscordに通知
+3. **popup.js**: 設定画面とWebhook管理、現在の課題状況表示
 
 ### カスタマイズ
 
 - 通知タイミングの変更: `content.js`の`checkDeadlines`関数で時間条件を調整
-- 通知メッセージの変更: `background.js`の`sendLineNotification`関数を修正
+- 通知メッセージの変更: `background.js`の`sendDiscordNotification`関数を修正
 - UIの変更: `popup.html`と`popup.js`を修正
 
 ## ライセンス

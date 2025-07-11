@@ -13,7 +13,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
   
   if (message.type === 'test_notification') {
-    testLineNotification();
+    testDiscordNotification();
     sendResponse({ success: true });
   }
 });
@@ -34,7 +34,7 @@ async function handleAssignmentsUpdate(assignments, urgentAssignments) {
     
     // 新しい緊急課題があれば通知
     if (newUrgentAssignments.length > 0) {
-      await sendLineNotification(newUrgentAssignments);
+      await sendDiscordNotification(newUrgentAssignments);
       
       // 通知済みリストに追加
       const updatedNotified = [...notifiedAssignments, ...newUrgentAssignments];
@@ -58,74 +58,82 @@ async function handleAssignmentsUpdate(assignments, urgentAssignments) {
   }
 }
 
-// LINE通知送信
-async function sendLineNotification(urgentAssignments) {
+// Discord通知送信
+async function sendDiscordNotification(urgentAssignments) {
   try {
-    const { lineToken } = await chrome.storage.local.get(['lineToken']);
+    const { discordWebhook } = await chrome.storage.local.get(['discordWebhook']);
     
-    if (!lineToken) {
-      console.log('LINE Notifyトークンが設定されていません');
+    if (!discordWebhook) {
+      console.log('Discord Webhookが設定されていません');
       return;
     }
     
-    // 通知メッセージを作成
-    let message = '🚨 課題の締切が近づいています！\n\n';
-    
-    urgentAssignments.forEach(assignment => {
-      message += `📚 ${assignment.subject}\n`;
-      message += `📝 ${assignment.title}\n`;
-      message += `⏰ 締切: ${assignment.dueDate}\n`;
-      message += `🕐 残り時間: ${assignment.hoursLeft}時間\n`;
-      if (assignment.url) {
-        message += `🔗 ${assignment.url}\n`;
+    // 埋め込みメッセージを作成
+    const embeds = urgentAssignments.map(assignment => ({
+      title: assignment.title,
+      description: `**科目:** ${assignment.subject}\n**締切:** ${assignment.dueDate}\n**残り時間:** ${assignment.hoursLeft}時間`,
+      color: 0xff4444, // 赤色
+      url: assignment.url || undefined,
+      timestamp: new Date().toISOString(),
+      footer: {
+        text: 'Manaba課題通知'
       }
-      message += '\n';
-    });
+    }));
     
-    // LINE Notify APIに送信
-    const response = await fetch('https://notify-api.line.me/api/notify', {
+    const payload = {
+      content: '🚨 **課題の締切が近づいています！**',
+      embeds: embeds
+    };
+    
+    // Discord Webhookに送信
+    const response = await fetch(discordWebhook, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${lineToken}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
-      body: new URLSearchParams({
-        message: message
-      })
+      body: JSON.stringify(payload)
     });
     
     if (response.ok) {
-      console.log('LINE通知を送信しました');
+      console.log('Discord通知を送信しました');
     } else {
-      console.error('LINE通知の送信に失敗しました:', response.status);
+      console.error('Discord通知の送信に失敗しました:', response.status);
     }
     
   } catch (error) {
-    console.error('LINE通知送信中にエラーが発生しました:', error);
+    console.error('Discord通知送信中にエラーが発生しました:', error);
   }
 }
 
 // テスト通知
-async function testLineNotification() {
+async function testDiscordNotification() {
   try {
-    const { lineToken } = await chrome.storage.local.get(['lineToken']);
+    const { discordWebhook } = await chrome.storage.local.get(['discordWebhook']);
     
-    if (!lineToken) {
-      console.log('LINE Notifyトークンが設定されていません');
+    if (!discordWebhook) {
+      console.log('Discord Webhookが設定されていません');
       return;
     }
     
-    const testMessage = '🧪 Manaba課題通知のテストです\n\n設定が正常に動作しています！';
+    const payload = {
+      content: '🧪 **Manaba課題通知のテストです**',
+      embeds: [{
+        title: 'テスト通知',
+        description: '設定が正常に動作しています！',
+        color: 0x00ff00, // 緑色
+        timestamp: new Date().toISOString(),
+        footer: {
+          text: 'Manaba課題通知'
+        }
+      }]
+    };
     
-    const response = await fetch('https://notify-api.line.me/api/notify', {
+    const response = await fetch(discordWebhook, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${lineToken}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
-      body: new URLSearchParams({
-        message: testMessage
-      })
+      body: JSON.stringify(payload)
     });
     
     if (response.ok) {

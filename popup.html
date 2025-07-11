@@ -134,14 +134,14 @@
         <h1>📚 Manaba課題通知</h1>
         
         <div class="section">
-            <h2>🔔 LINE通知設定</h2>
+            <h2>🔔 Discord通知設定</h2>
             <div class="input-group">
-                <label for="lineToken">LINE Notifyトークン:</label>
-                <input type="password" id="lineToken" placeholder="LINE Notifyトークンを入力">
+                <label for="discordWebhook">Discord Webhook URL:</label>
+                <input type="password" id="discordWebhook" placeholder="Discord Webhook URLを入力">
             </div>
-            <button id="saveToken">保存</button>
+            <button id="saveWebhook">保存</button>
             <button id="testNotification" class="secondary">テスト通知</button>
-            <div class="link" id="getTokenLink">トークンの取得方法</div>
+            <div class="link" id="getWebhookLink">Webhookの取得方法</div>
         </div>
         
         <div class="section">
@@ -155,10 +155,10 @@
         <div class="section">
             <h2>ℹ️ 使用方法</h2>
             <ol style="font-size: 11px; color: #666; margin: 0; padding-left: 20px;">
-                <li>LINE Notifyトークンを取得して上記に設定</li>
+                <li>Discord Webhook URLを取得して上記に設定</li>
                 <li>manabaの課題ページ（ホーム）を開く</li>
                 <li>締切24時間以内の課題を自動検出</li>
-                <li>新しい緊急課題があればLINEに通知</li>
+                <li>新しい緊急課題があればDiscordに通知</li>
             </ol>
         </div>
     </div>
